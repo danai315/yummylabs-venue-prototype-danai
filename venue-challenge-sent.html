@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Venue – Design Sent</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f0cbb5; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 32px 16px 64px; font-family: 'Poppins', sans-serif; }
+    .phone { width: 390px; height: 812px; background: #FEDECF; border-radius: 48px; overflow: hidden; box-shadow: 0 24px 64px rgba(101,77,78,0.2); display: flex; flex-direction: column; position: relative; }
+    .status-bar { display: flex; justify-content: space-between; align-items: center; padding: 16px 28px 8px; font-size: 12px; font-weight: 700; color: #654D4E; flex-shrink: 0; }
+    .status-icons { display: flex; align-items: center; gap: 6px; }
+    .status-icons svg { width: 15px; height: 15px; }
+    .top-bar { width: 100%; height: 50px; background: #FEDECF; display: flex; align-items: center; padding: 0 14px; gap: 8px; flex-shrink: 0; }
+    .back-btn { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.6); display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; flex-shrink: 0; text-decoration: none; }
+    .back-btn svg { width: 18px; height: 18px; color: #654D4E; }
+    .currency-pill { flex: 1; display: flex; align-items: center; justify-content: center; gap: 14px; background: white; border-radius: 50px; height: 34px; padding: 0 16px; box-shadow: 0 1px 6px rgba(101,77,78,0.08); }
+    .currency { display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; color: #654D4E; }
+    .action-btn { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.5); display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; }
+    .action-btn svg { width: 18px; height: 18px; color: #654D4E; opacity: 0.55; }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scaleIn {
+      0% { opacity: 0; transform: scale(0.3); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Room scene */
+    .room-scene {
+      height: 340px;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .room-scene img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .room-scene .layer-1 { z-index: 1; }
+    .room-scene .layer-2 { z-index: 2; }
+    .room-scene .layer-3 { z-index: 3; }
+    .room-scene .layer-4 { z-index: 4; }
+    .room-scene .layer-5 { z-index: 5; }
+
+    /* Content section */
+    .content-section {
+      flex: 1;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 24px 20px;
+    }
+
+    .sent-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #EF9180;
+      text-align: center;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .checkmark-img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      animation: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+    }
+
+    /* Result ready row */
+    .result-row {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+      animation: fadeUp 0.5s ease 0.3s both;
+    }
+    .result-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #654D4E;
+    }
+    .timer-badge {
+      background: #F6EEE6;
+      border-radius: 50px;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .timer-badge img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+    .timer-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: #A3898C;
+    }
+
+    /* Salon note */
+    .salon-note {
+      background: rgba(132,201,201,0.1);
+      border-radius: 14px;
+      padding: 10px 16px;
+      text-align: center;
+      font-size: 11px;
+      color: #84C9C9;
+      font-weight: 600;
+      animation: fadeUp 0.5s ease 0.4s both;
+    }
+
+    /* Button row */
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+      animation: fadeUp 0.5s ease 0.5s both;
+    }
+
+    .share-btn {
+      flex: 1;
+      height: 48px;
+      border-radius: 50px;
+      background: linear-gradient(155deg, #77DBD2 11%, #69BFCC 79%);
+      box-shadow: 0 3px 4px rgba(88,173,185,0.3), 0 3px 4px rgba(101,77,78,0.1), inset 0 -4px 0 rgba(88,173,185,0.8);
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .share-btn img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+
+    .next-btn {
+      flex: 1;
+      height: 48px;
+      border-radius: 50px;
+      background: linear-gradient(173deg, #FFC226 20%, #F59E4D 99%);
+      box-shadow: 0 3px 4px rgba(242,160,59,0.3), 0 3px 4px rgba(101,77,78,0.1), inset 0 -4px 0 rgba(225,127,54,0.3);
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+    }
+    .next-btn:active { transform: translateY(3px); box-shadow: 0 1px 2px rgba(242,160,59,0.2), inset 0 -1px 0 rgba(225,127,54,0.3); }
+    .share-btn:active { transform: translateY(3px); box-shadow: 0 1px 2px rgba(88,173,185,0.2), inset 0 -1px 0 rgba(88,173,185,0.4); }
+
+    /* ── Popup overlay ── */
+    @keyframes backdropIn { from { opacity:0; } to { opacity:1; } }
+    @keyframes popupIn {
+      0%   { opacity:0; transform: scale(0.85) translateY(24px); }
+      60%  { transform: scale(1.03) translateY(-4px); }
+      100% { opacity:1; transform: scale(1) translateY(0); }
+    }
+    @keyframes checkBounce {
+      0%   { transform: scale(0) rotate(-20deg); }
+      55%  { transform: scale(1.2) rotate(8deg); }
+      75%  { transform: scale(0.92) rotate(-4deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+    @keyframes amountCount {
+      0%   { opacity:0; transform: scale(0.7); }
+      70%  { transform: scale(1.1); }
+      100% { opacity:1; transform: scale(1); }
+    }
+    @keyframes flyUp {
+      0%   { opacity:1; transform: translate(0,0) scale(1) rotate(0deg); }
+      100% { opacity:0; transform: translate(var(--fx), var(--fy)) scale(0.4) rotate(var(--fr)); }
+    }
+
+    .popup-overlay {
+      display: none; position: absolute; inset: 0; z-index: 50;
+      background: rgba(101,77,78,0.55); backdrop-filter: blur(5px);
+      align-items: center; justify-content: center;
+      animation: backdropIn 0.3s ease both;
+    }
+    .popup-overlay.visible { display: flex; }
+    .popup-card {
+      background: white; border-radius: 36px; padding: 32px 24px 24px;
+      width: 310px; position: relative;
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+      animation: popupIn 0.55s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    .popup-check {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: linear-gradient(135deg, #6DC9C2 0%, #84C9C9 100%);
+      box-shadow: 0 6px 24px rgba(109,201,194,0.45);
+      display: flex; align-items: center; justify-content: center;
+      margin-top: -56px; flex-shrink: 0;
+      animation: checkBounce 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;
+    }
+    .popup-check img { width: 44px; height: 44px; object-fit: contain; }
+    .popup-title {
+      font-size: 20px; font-weight: 700; color: #EF9180;
+      text-align: center; line-height: 1.2;
+      animation: fadeUp 0.3s ease 0.38s both;
+    }
+    .popup-amounts {
+      display: flex; gap: 20px; align-items: center;
+      animation: fadeUp 0.3s ease 0.5s both;
+    }
+    .popup-amount-item { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .popup-amount-item img { width: 42px; height: 42px; object-fit: contain; animation: amountCount 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.55s both; }
+    .popup-amount-num { font-size: 16px; font-weight: 700; color: #654D4E; }
+    .popup-amount-lbl { font-size: 10px; color: #A3898C; }
+    .popup-cta {
+      width: 100%; height: 48px; border-radius: 50px;
+      background: linear-gradient(173deg, #FFC226 20%, #F59E4D 99%);
+      box-shadow: 0 3px 4px rgba(242,160,59,0.3), inset 0 -4px 0 rgba(225,127,54,0.3);
+      color: white; font-size: 15px; font-weight: 700; font-family: 'Poppins', sans-serif;
+      text-decoration: none; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      animation: fadeUp 0.3s ease 0.65s both;
+    }
+    .fly-particle {
+      position: fixed; pointer-events: none; z-index: 9999;
+      animation: flyUp var(--dur) ease-out var(--delay) both;
+    }
+    .fly-particle img { width: var(--sz); height: var(--sz); object-fit: contain; }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <!-- Status bar -->
+    <div class="status-bar">
+      <span>9:41</span>
+      <div class="status-icons">
+        <svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="8" width="3" height="13" rx="1"/><rect x="7" y="5" width="3" height="16" rx="1"/><rect x="12" y="2" width="3" height="19" rx="1"/></svg>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 00-6 0zm-4-4l2 2a7.074 7.074 0 0110 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="18" height="11" rx="2"/><path d="M22 11v3" stroke-width="3" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+    <!-- Top bar -->
+    <div class="top-bar">
+      <a href="venue-challenge-play.html" class="back-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </a>
+      <div class="currency-pill">
+        <div class="currency"><span>🖌️</span><span>200K</span></div>
+        <div class="currency"><span>🪙</span><span>150K</span></div>
+        <div class="currency"><span>💎</span><span>150K</span></div>
+      </div>
+      <button class="action-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      </button>
+    </div>
+
+    <!-- Room scene: layered -->
+    <div class="room-scene">
+      <!-- Layer 1: wall bg -->
+      <img class="layer-1" src="https://www.figma.com/api/mcp/asset/ffa7c25f-88bd-4cdb-adf6-7529ed9eca67" alt="Wall background" />
+      <!-- Layer 2: rug -->
+      <img class="layer-2" src="https://www.figma.com/api/mcp/asset/292a4044-b344-4986-9e1c-c2c1ae6e69ac" alt="Rug" />
+      <!-- Layer 3: back chairs -->
+      <img class="layer-3" src="https://www.figma.com/api/mcp/asset/7ab27c8f-fd28-4a00-8a2e-9b996edb6faf" alt="Back chairs" />
+      <!-- Layer 4: table -->
+      <img class="layer-4" src="https://www.figma.com/api/mcp/asset/2f7f8787-7c2d-43ae-befe-457eec6109e0" alt="Table" />
+      <!-- Layer 5: front plants -->
+      <img class="layer-5" src="https://www.figma.com/api/mcp/asset/5b4508ce-61ee-4761-b123-7d83a23a0a6b" alt="Front plants" />
+    </div>
+
+    <!-- Content section -->
+    <div class="content-section">
+
+      <div class="sent-title">Design Sent To Voting! 🎉</div>
+
+      <img
+        class="checkmark-img"
+        src="https://www.figma.com/api/mcp/asset/858d7bb2-7dd0-4c32-9b6f-e1530cf90e98"
+        alt="Success checkmark"
+      />
+
+      <div class="result-row">
+        <span class="result-label">Result ready in:</span>
+        <div class="timer-badge">
+          <img src="https://www.figma.com/api/mcp/asset/d2ac7d0f-40b8-4802-9845-d0e84e4bb981" alt="Clock" />
+          <span class="timer-text">00h</span>
+        </div>
+      </div>
+
+      <div class="salon-note">
+        ⬆️ +500 milestone points added to Earth Tone Studio!
+      </div>
+
+      <div class="btn-row">
+        <button class="share-btn">
+          <img src="https://www.figma.com/api/mcp/asset/aff334a4-873a-4a11-8dd6-0d32b4a818ee" alt="Share" />
+          Share
+        </button>
+        <button class="next-btn" onclick="openPopup()">Next →</button>
+      </div>
+
+    </div>
+
+    <!-- ── Rewards popup ── -->
+    <div class="popup-overlay" id="popup">
+      <div class="popup-card" id="popup-card">
+        <div class="popup-check">
+          <img src="https://www.figma.com/api/mcp/asset/858d7bb2-7dd0-4c32-9b6f-e1530cf90e98" alt="✓" />
+        </div>
+        <div class="popup-title">Rewards Collected!</div>
+        <div class="popup-amounts">
+          <div class="popup-amount-item">
+            <img src="https://www.figma.com/api/mcp/asset/95d8141b-bb27-4b04-a081-bdd64ae199c4" alt="Coins" />
+            <span class="popup-amount-num">2,000</span>
+            <span class="popup-amount-lbl">coins</span>
+          </div>
+          <div class="popup-amount-item">
+            <img src="https://www.figma.com/api/mcp/asset/0f0cf4c9-e768-4976-93f1-bcf23e82d94a" alt="Gems" />
+            <span class="popup-amount-num">10</span>
+            <span class="popup-amount-lbl">gems</span>
+          </div>
+          <div class="popup-amount-item">
+            <img src="https://www.figma.com/api/mcp/asset/2e0cc081-1f34-4543-a4a3-ad84028229e9" alt="XP" />
+            <span class="popup-amount-num">+500</span>
+            <span class="popup-amount-lbl">XP</span>
+          </div>
+        </div>
+        <a href="venue-salon-landing.html?done=1" class="popup-cta">Back to Salon ✨</a>
+      </div>
+    </div>
+
+  </div>
+  <script>
+    function openPopup() {
+      const overlay = document.getElementById('popup');
+      overlay.classList.add('visible');
+      setTimeout(spawnParticles, 300);
+    }
+
+    function spawnParticles() {
+      const card = document.getElementById('popup-card');
+      const r = card.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      const icons = [
+        'https://www.figma.com/api/mcp/asset/95d8141b-bb27-4b04-a081-bdd64ae199c4',
+        'https://www.figma.com/api/mcp/asset/0f0cf4c9-e768-4976-93f1-bcf23e82d94a',
+        'https://www.figma.com/api/mcp/asset/2e0cc081-1f34-4543-a4a3-ad84028229e9',
+      ];
+      const count = 12;
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement('div');
+        el.className = 'fly-particle';
+        const angle = (i / count) * 360 + Math.random() * 30;
+        const dist = 80 + Math.random() * 100;
+        const rad = (angle * Math.PI) / 180;
+        const fx = Math.cos(rad) * dist + 'px';
+        const fy = (Math.sin(rad) * dist - 40) + 'px';
+        const fr = (Math.random() * 360 - 180) + 'deg';
+        const sz = (22 + Math.random() * 16) + 'px';
+        el.style.cssText = `left:${cx}px;top:${cy}px;--fx:${fx};--fy:${fy};--fr:${fr};--sz:${sz};--dur:${0.7 + Math.random()*0.5}s;--delay:${Math.random()*0.2}s`;
+        const img = document.createElement('img');
+        img.src = icons[i % icons.length];
+        el.appendChild(img);
+        document.body.appendChild(el);
+        el.addEventListener('animationend', () => el.remove());
+      }
+    }
+  </script>
+</body>
+</html>
